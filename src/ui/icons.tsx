@@ -28,7 +28,9 @@ export type IconName =
   | 'settings'
   | 'pro'
   | 'volume'
-  | 'volumeOff';
+  | 'volumeOff'
+  | 'fullscreen'
+  | 'fullscreenExit';
 
 export function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
   return (
@@ -203,6 +205,10 @@ function glyph(name: IconName): ReactNode {
           <path d="m15.5 9.5 5 5M20.5 9.5l-5 5" />
         </>
       );
+    case 'fullscreen':
+      return <path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" />;
+    case 'fullscreenExit':
+      return <path d="M9 4v5H4M15 4v5h5M15 20v-5h5M9 20v-5H4" />;
     case 'axes':
       return (
         <>

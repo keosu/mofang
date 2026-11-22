@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ButtonHTMLAttributes } from 'react';
+import { Capacitor } from '@capacitor/core';
 import {
   COLOR_HEX,
   COLOR_LIST,
@@ -191,6 +192,29 @@ export default function App() {
     stepForward: () => Promise.resolve(false),
     stepBack: () => Promise.resolve(),
   });
+
+  const canFullscreen =
+    !Capacitor.isNativePlatform() &&
+    typeof document !== 'undefined' &&
+    document.fullscreenEnabled === true;
+  const [fullOn, setFullOn] = useState(false);
+
+  useEffect(() => {
+    if (!canFullscreen) return;
+    const onChange = () => setFullOn(!!document.fullscreenElement);
+    document.addEventListener('fullscreenchange', onChange);
+    return () => document.removeEventListener('fullscreenchange', onChange);
+  }, [canFullscreen]);
+
+  function toggleFullscreen() {
+    if (document.fullscreenElement) {
+      void document.exitFullscreen().catch(() => undefined);
+      return;
+    }
+    document.documentElement.requestFullscreen().catch(() => {
+      setStatus('这个浏览器不允许全屏。可以在浏览器菜单里选「添加到主屏幕」，再从桌面打开。');
+    });
+  }
 
   useEffect(() => {
     try {
@@ -635,6 +659,18 @@ export default function App() {
             <Icon name={panelOpen ? 'panelHide' : 'panel'} size={16} />
             <span className="icon-btn-label">{panelOpen ? '隐藏面板' : '显示面板'}</span>
           </button>
+          {canFullscreen && (
+            <button
+              type="button"
+              className="icon-btn"
+              aria-pressed={fullOn}
+              aria-label={fullOn ? '退出全屏' : '全屏'}
+              onClick={toggleFullscreen}
+            >
+              <Icon name={fullOn ? 'fullscreenExit' : 'fullscreen'} size={16} />
+              <span className="icon-btn-label">{fullOn ? '退出全屏' : '全屏'}</span>
+            </button>
+          )}
           <div className={timing ? 'timer on' : 'timer'} aria-live="polite">
             <Icon name="clock" size={16} />
             <span>{formatTime(elapsed)}</span>

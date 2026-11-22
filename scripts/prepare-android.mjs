@@ -26,3 +26,21 @@ ensure(
 
 writeFileSync(manifestPath, xml);
 console.log('Android 清单已包含相机权限');
+
+// 全屏：隐藏顶部状态栏，内容延伸到刘海区域。
+const stylesPath = 'android/app/src/main/res/values/styles.xml';
+if (existsSync(stylesPath)) {
+  let styles = readFileSync(stylesPath, 'utf8');
+  const fullscreenItems = [
+    '<item name="android:windowFullscreen">true</item>',
+    '<item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>',
+  ];
+  const opening = /<style name="AppTheme\.NoActionBar"[^>]*>/;
+  if (opening.test(styles) && !styles.includes('android:windowFullscreen')) {
+    styles = styles.replace(opening, (tag) => `${tag}\n        ${fullscreenItems.join('\n        ')}`);
+    writeFileSync(stylesPath, styles);
+    console.log('Android 主题已设为全屏');
+  } else if (!opening.test(styles)) {
+    console.warn('没有找到 AppTheme.NoActionBar，全屏主题未设置');
+  }
+}

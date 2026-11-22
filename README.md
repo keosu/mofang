@@ -16,6 +16,19 @@ npm run dev
 
 顶栏可以收起下面的操作面板，魔方会占满剩下的画面。再点一次同一个按钮就能把面板打开。这个选择会记在本机。
 
+## 在线版（GitHub Pages）
+
+推送到 `main` 后，「GitHub Pages」流程会跑测试、构建并发布。地址是 `https://keosu.github.io/mofang/`。
+
+第一次需要在仓库里打开一次：Settings → Pages → Build and deployment → Source 选 **GitHub Actions**。
+
+## 全屏和装到桌面
+
+- **Android Chrome**：菜单里选「添加到主屏幕」，从桌面打开时以全屏运行，状态栏隐藏。
+- **桌面 Chrome / Edge**：顶栏的「全屏」按钮。
+- **iPhone Safari**：菜单里选「添加到主屏幕」。iOS 不允许网页隐藏状态栏，只能用透明状态栏让页面延伸到顶部，并且不支持「全屏」按钮。
+- **APK**：启动时隐藏状态栏，内容延伸到刘海区域。
+
 ## 安卓安装包
 
 网页仍然可以用 Chrome「添加到主屏幕」。另外可以用 Capacitor 打出 APK。
