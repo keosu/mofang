@@ -22,10 +22,10 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - uses: android-actions/setup-android@v3
-
       - name: Install Android 36 platform
-        run: sdkmanager --install "platforms;android-36"
+        run: |
+          yes | sdkmanager --licenses > /dev/null || true
+          sdkmanager --install "platforms;android-36"
 
       - run: npm ci
       - run: npm test
